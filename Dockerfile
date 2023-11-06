@@ -36,12 +36,16 @@ ADD subversion/ /etc/services.d/subversion/
 # Add SVNAuth file
 ADD subversion-access-control /etc/subversion/subversion-access-control
 RUN chmod a+w /etc/subversion/* && chmod a+w /home/svn
+RUN chown apache:apache /home/svn
 
 # Add WebDav configuration
 ADD dav_svn.conf /etc/apache2/conf.d/dav_svn.conf
 
 # Set HOME in non /root folder
 ENV HOME /home
+
+# switch to a non-privileged user
+USER apache
 
 # Expose ports for http and custom protocol access
 EXPOSE 80 443 3690
